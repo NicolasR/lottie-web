@@ -758,7 +758,9 @@
         });
       }
     };
-    this._workerSelf = {
+    // Used by function with context
+    // eslint-disable-next-line no-unused-vars
+    var _workerSelf = {
       postMessage: function postMessage(data) {
         workerProxy.onmessage({
           data: data
