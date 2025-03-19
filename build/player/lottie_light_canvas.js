@@ -462,7 +462,7 @@
         });
       }
     };
-    var _workerSelf = {
+    this._workerSelf = {
       postMessage: function postMessage(data) {
         workerProxy.onmessage({
           data: data
@@ -953,11 +953,11 @@
             moduleOb.completeLayers = completeLayers;
             return moduleOb;
           }
-          if (!_workerSelf.dataManager) {
-            _workerSelf.dataManager = dataFunctionManager();
+          if (!this._workerSelf.dataManager) {
+            this._workerSelf.dataManager = dataFunctionManager();
           }
-          if (!_workerSelf.assetLoader) {
-            _workerSelf.assetLoader = function () {
+          if (!this._workerSelf.assetLoader) {
+            this._workerSelf.assetLoader = function () {
               function formatResponse(xhr) {
                 // using typeof doubles the time of execution of this method,
                 // so if available, it's better to use the header to validate the type
@@ -1016,36 +1016,36 @@
             }();
           }
           if (e.data.type === 'loadAnimation') {
-            _workerSelf.assetLoader.load(e.data.path, e.data.fullPath, function (data) {
-              _workerSelf.dataManager.completeData(data);
-              _workerSelf.postMessage({
+            this._workerSelf.assetLoader.load(e.data.path, e.data.fullPath, function (data) {
+              this._workerSelf.dataManager.completeData(data);
+              this._workerSelf.postMessage({
                 id: e.data.id,
                 payload: data,
                 status: 'success'
               });
             }, function () {
-              _workerSelf.postMessage({
+              this._workerSelf.postMessage({
                 id: e.data.id,
                 status: 'error'
               });
             });
           } else if (e.data.type === 'complete') {
             var animation = e.data.animation;
-            _workerSelf.dataManager.completeData(animation);
-            _workerSelf.postMessage({
+            this._workerSelf.dataManager.completeData(animation);
+            this._workerSelf.postMessage({
               id: e.data.id,
               payload: animation,
               status: 'success'
             });
           } else if (e.data.type === 'loadData') {
-            _workerSelf.assetLoader.load(e.data.path, e.data.fullPath, function (data) {
-              _workerSelf.postMessage({
+            this._workerSelf.assetLoader.load(e.data.path, e.data.fullPath, function (data) {
+              this._workerSelf.postMessage({
                 id: e.data.id,
                 payload: data,
                 status: 'success'
               });
             }, function () {
-              _workerSelf.postMessage({
+              this._workerSelf.postMessage({
                 id: e.data.id,
                 status: 'error'
               });
@@ -5924,7 +5924,7 @@
       We split each bezier segment into smaller pieces based
       on inflection points, this ensures the control point
       polygon is convex.
-       (A cubic bezier can have none, one, or two inflection points)
+        (A cubic bezier can have none, one, or two inflection points)
     */
     var flex = segment.inflectionPoints();
     var left;
